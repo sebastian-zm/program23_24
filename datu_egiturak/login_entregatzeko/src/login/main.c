@@ -5,6 +5,8 @@ void password_login_irakurri(char* erabiltzaile_izena, char* pasahitza);
 int login_konprobatu(char* erabiltzaile_izena, char* pasahitza);
 void menua(int erabil_mota, char username[]);
 void agur_mezua(void);
+void saiakera_gehiegi(void);
+void login_erantzun(int logeatua);
 
 #define UNUSED(x) do (void) x; while (0)
 
@@ -17,16 +19,38 @@ int main(int argc, char** argv) {
     int logeatua = 0;
     char username[64];
     char password[64];
+    int saiakerak = 3;
 
     //programa
-    password_login_irakurri(username, password);
-    logeatua = login_konprobatu(username, password);
+    while (!logeatua && saiakerak > 0) {
+        password_login_irakurri(username, password);
+        logeatua = login_konprobatu(username, password);
+        login_erantzun(logeatua);
+        --saiakerak;
+    }
     
-    menua(logeatua, username);
+    if (logeatua) {
+        menua(logeatua, username);
+    } else {
+        saiakera_gehiegi();
+    }
     //bukaera
     agur_mezua();
 
     return 0;
+}
+
+
+void login_erantzun(int logeatua) {
+    if (logeatua) {
+        printf("Pasaitza zuzena. Sartzen...\n");
+    } else {
+        printf("Pasahitza ala erabiltzaile okerra!\n");
+    }
+}
+
+void saiakera_gehiegi(void) {
+    printf("Saiakera gehiegi! Bukatzen...\n");
 }
 
 void password_login_irakurri(char* erabiltzaile_izena, char* pasahitza) {
@@ -46,10 +70,13 @@ int login_konprobatu(char* erabiltzaile_izena, char* pasahitza) {
 }
 
 void menua(int erabil_mota, char username[]) {
-    if (erabil_mota) {
-        printf("Ongi etorri aplikazioara, %s.\n", username);
-    } else {
-        printf("Pasahitz ala erabilztaile desegokia.\n");
+    switch (erabil_mota) {
+        case 1:
+            printf("Ongi etorri, %s! Erabiltzaile mota: %d\n\n", username, erabil_mota);
+            break;
+        default:
+            printf("Errorea: erabiltzaile mota ezezaguna.");
+            break;
     }
 }
 
