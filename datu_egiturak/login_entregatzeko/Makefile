@@ -7,10 +7,17 @@ ASSET_DIR ?= ./assets
 ASSETS := $(wildcard $(addsuffix /*/*,$(ASSET_DIR)))
 COPIED_ASSETS := $(ASSETS:%=$(BUILD_DIR)/%)
 
-INC_DIRS := $(patsubst %/,%,$(wildcard $(addsuffix /*/,$(SRC_DIR)))) $(LIB_INC_DIRS)
+SELF_INC_DIRS := $(patsubst %/,%,$(wildcard $(addsuffix /*/,$(SRC_DIR))))
+INC_DIRS := $(SELF_INC_DIRS) $(LIB_INC_DIRS)
 INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
-SRCS := $(wildcard $(addsuffix /*.c,$(INC_DIRS)))
+SRCS := $(wildcard $(addsuffix /*.c,$(SELF_INC_DIRS)))
+SELF_HDRS := $(wildcard $(addsuffix /*.h,$(SELF_INC_DIRS)))
+LIB_HDRS := $(wildcard $(addsuffix /*.h,$(LIB_INC_DIRS)))
+HDRS := $(SELF_HDRS) $(LIB_HDRS)
+SELF_CODE := $(SRCS) $(SELF_HDRS)
+CODE := $(SELF_CODE) $(LIB_HDRS)
+
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)
 
@@ -25,8 +32,11 @@ all: $(BUILD_DIR)/$(TARGET_EXEC) $(COPIED_ASSETS)
 clean:
 	$(RM) -r $(BUILD_DIR)
 
+indent:
+	indent -linux $(SELF_CODE)
+
 tags: $(INC_DIRS)
-	ctags -R $(INC_DIRS)
+	ctags --extras=+f $(CODE)
 
 $(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
 	$(CC) $(OBJS) -o $@ $(LDFLAGS)
