@@ -18,7 +18,7 @@ CFLAGS := -std=c17 -Wall -Wextra -Werror -pedantic-errors -Og -ggdb3
 CPPFLAGS := $(INC_FLAGS) -MMD -MP
 LDFLAGS := $(LIB_LDFLAGS)
 
-.PHONY: all clean
+.PHONY: all clean indent
 
 all: $(BUILD_DIR)/$(TARGET_EXEC) $(COPIED_ASSETS)
 
