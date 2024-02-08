@@ -1,134 +1,174 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stddef.h>
 
-#define MAX_STR 64
-#define MAX_ZENBAKIAK 10
+#define UNUSED(x) do (void) x; while (0)
+
+#define MEMORIA_GABE "Memoria gabe geratu gara. :(\\n"
+#define SAIAKERAK 3
+#define BUFFER_SIZE 64
 
 typedef struct {
-	char izena[MAX_STR];
-	char pasahitza[MAX_STR];
+	char *izena;
+	char *pasahitza;
 	int erabiltzailea_mota;	//0-user, 1-admin 2-guest
-	char email[MAX_STR];
+	char *email;
 } USER;
 
-//FUNZTIOEN BURUALDEEN DEFINIZIOA
+int loginSaiatu(USER datubasea[], int erabiltzaile_kop, int saiakerak,
+		int *erabiltzaile_id);
+int loginSaiakera(USER datubasea[], int erabiltzaile_kop, int *erabiltzaile_id);
+void ongiEtorri(USER erabiltzaile);
+void saiakeraGehiegi(void);
+char *stringEskatu(char *prompt);
 void agur_mezua(void);
-int logina(void);
-void password_login_irakurri(char erabiltzaile_izena[], char pasahitza[],
-			     int saiakerak);
-int login_konprobatu(char *username, char password[], char *datubasea_izenak[],
-		     char *datubasea_pasahitzak[], int kop_username);
-void menua(int erabil_mota, char username[]);
 
 int main(int num, char *args[])
 {
-	//aldagiak
-	int logeatua = 0;
-	//char* string bat
-	//char* [] -> string-en array bat , izen asko , [0], [1]
-	//char* datubasea_username[10];
-	char *datubasea_izenak[] =
-	    { "admin", "joseba", "user", "idazkaritza", "irati", "jon" };
-	int kop_username = 6;
-	char *datubasea_pasahitzak[] =
-	    { "admin", "user", "qwerty", "11111", "@g1rr3", "gshgyf%__%$1525" };
-	int kop_pasahitzak = 6;
+	UNUSED(num);
+	UNUSED(args);
 
 	USER datubasea[] = {
-		{"admin", "admin", 1, "admin@mondragon.edu"},
-		{"joseba", "qwerty", 0, "jaagirre@mondragon.edu"},
-		{"idazkaritza", "11111", 0, "daz@mondragon.edu"},
-		{"irati", "@g1rr3", 2, "irati@gmail.com"},
+		{.izena = "admin",.pasahitza = "qwerty",.erabiltzailea_mota =
+		 1,.email = "admin@example.invalid"}
 	};
 
-	int kop_users = 4;
-
-	USER user1;
-	USER user2;
-
-	char username[] = "joseba";
-	char password[] = "nire super pasahitza";
-	int saiakerak = 3;
-	//programa
-	password_login_irakurri(username, password, saiakerak);
-
-	while (logeatua == 0 && saiakerak > 0) {
-		password_login_irakurri(username, password, saiakerak);
-		logeatua =
-		    login_konprobatu(username, password, datubasea_izenak,
-				     datubasea_pasahitzak, kop_username);
-		if (logeatua == 0) {
-			saiakerak--;	//saiakerak= saiakreak-1;
-		}
-
+	int erabiltzaile_id;
+	if (loginSaiatu
+	    (datubasea, sizeof(datubasea) / sizeof(datubasea[0]), SAIAKERAK,
+	     &erabiltzaile_id)) {
+		ongiEtorri(datubasea[erabiltzaile_id]);
+	} else {
+		saiakeraGehiegi();
 	}
 
-	menua(logeatua, username);
+	//programa
+	//1-ESKATU username eta password
+	//2-konprobatu admin qwerty
+	//3-admin qwerty bada emon ongi etorria
+	//4-bestela esan desegokia dela
+	//5-3 saiakera
+
 	//bukaera
 	agur_mezua();
 
 	return 0;
 }
 
-void menua(int erabil_mota, char izena[])
+char *stringEskatu(char *prompt)
 {
-	if (erabil_mota == 1) {
-		printf("Ongi etorri aplikazioara %s\n", izena);
-	} else {
-		printf("Login desegokia. Agur.\n");
+	char *ret;
+	char *tmp;
+	ptrdiff_t azkenera = 0;
+
+	char *fgets_ondo = NULL;
+	char *amaitu_da = NULL;
+
+	printf("%s", prompt);
+
+	ret = malloc(BUFFER_SIZE * sizeof(*ret));
+
+	if (ret) {
+		fgets_ondo = fgets(ret + azkenera, BUFFER_SIZE - 1, stdin);
+		amaitu_da = strrchr(ret + azkenera, '\n');
 	}
-}
 
-int login_konprobatu(char *username, char password[], char *datubasea_izenak[],
-		     char *datubasea_pasahitzak[], int kop_username)
-{
-	int ret_logeatua = 0;
-	int izenak_berdinak = 1;
-	int pasahitzak_berdinak = 1;
-	int i = 0;
+	while (ret && fgets_ondo && !amaitu_da) {
+		azkenera = strchr(ret + azkenera, '\0') - ret;
 
-	do {
-		//konoaratu i garren username eta passord
-		izenak_berdinak = !strcmp(username, datubasea_izenak[i]);
-		pasahitzak_berdinak =
-		    !strcmp(password, datubasea_pasahitzak[i]);
+		tmp = realloc(ret, sizeof(*ret) * (azkenera + BUFFER_SIZE));
 
-		if ((izenak_berdinak == 1) && (pasahitzak_berdinak == 1)) {
-			ret_logeatua = 1;	//TRUE
+		if (tmp) {
+			ret = tmp;
+			fgets_ondo =
+			    fgets(ret + azkenera, BUFFER_SIZE - 1, stdin);
+			amaitu_da = strrchr(ret + azkenera, '\n');
 		} else {
-			i++;
+			free(ret);
+			ret = NULL;
 		}
-		//eta igualak baldn badira urten
-
 	}
-	while (ret_logeatua == 0 && i < kop_username);
 
-	return ret_logeatua;;
+	if (ret && fgets_ondo && amaitu_da) {
+		*amaitu_da = '\0';
+	} else if (ret && !fgets_ondo && !feof(stdin)) {
+		// Errorea gertatu da, eta ez da izan EOF.
+		free(ret);
+		ret = NULL;
+	}
 
+	return ret;
 }
 
-void password_login_irakurri(char erabiltzaile_izena[], char pasahitza[],
-			     int saiakerak)
+int loginSaiakera(USER datubasea[], int erabiltzaile_kop, int *erabiltzaile_id)
 {
-	printf
-	    ("================Subasta aplikazioan sartzeko logina=========================\n");
-	printf("%d saiakerak dituzu login eiteko\n", saiakerak);
+	char *erabiltzailea;
 
-	printf("Username:");
-	fgets(erabiltzaile_izena, 64, stdin);
-	erabiltzaile_izena[strlen(erabiltzaile_izena) - 1] = '\0';
+	char *pasahitza;
 
-	printf("Password:");
-	fgets(pasahitza, 64, stdin);
-	pasahitza[strlen(pasahitza) - 1] = '\0';
-	// system("cls"); =>windows
-	system("clear");	// => linux
-	// clrscr(); windows
+	int logeatua = 0;
+	int bukatu = 0;
+
+	int oraingo_erabiltzaile_idx = 0;
+
+	erabiltzailea = stringEskatu("Eman erabiltzailea: ");
+	pasahitza = stringEskatu("Eman pasahitza: ");
+
+	if (!pasahitza || !erabiltzailea) {
+		bukatu = 1;
+	}
+
+	while (!bukatu && oraingo_erabiltzaile_idx < erabiltzaile_kop) {
+		bukatu =
+		    !strcmp(erabiltzailea,
+			    datubasea[oraingo_erabiltzaile_idx].izena);
+
+		if (bukatu) {
+			logeatua =
+			    !strcmp(pasahitza,
+				    datubasea
+				    [oraingo_erabiltzaile_idx].pasahitza);
+		} else {
+			++oraingo_erabiltzaile_idx;
+		}
+	}
+
+	if (logeatua) {
+		*erabiltzaile_id = oraingo_erabiltzaile_idx;
+	}
+
+	free(erabiltzailea);
+	free(pasahitza);
+
+	return logeatua;
+}
+
+int loginSaiatu(USER datubasea[], int erabiltzaile_kop, int saiakerak,
+		int *erabiltzaile_id)
+{
+	int logeatua = 0;
+	while (!logeatua && saiakerak > 0) {
+		logeatua =
+		    loginSaiakera(datubasea, erabiltzaile_kop, erabiltzaile_id);
+		--saiakerak;
+	}
+
+	return logeatua;
+}
+
+void ongiEtorri(USER erabiltzaile)
+{
+	printf("Kaixo, %s\n", erabiltzaile.izena);
+}
+
+void saiakeraGehiegi(void)
+{
+	printf("Saiakera gehiegi egin dituzu.\n");
 }
 
 void agur_mezua(void)
 {
 	printf("Sakatu return bukatzeko....");
-	getchar();
+	getc(stdin);
 }
