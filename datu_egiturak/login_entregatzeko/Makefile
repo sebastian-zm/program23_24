@@ -33,7 +33,7 @@ clean:
 	$(RM) -r $(BUILD_DIR)
 
 indent:
-	indent -linux $(SELF_CODE)
+	indent -linux -l120 $(SELF_CODE)
 
 tags: $(INC_DIRS)
 	ctags --extras=+f $(CODE)
