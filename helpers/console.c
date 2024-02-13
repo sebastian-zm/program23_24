@@ -33,7 +33,7 @@ char *HELPERS_CONSOLE_stringEskatu(char *prompt)
 
 	if (ret) {
 		fgets_ondo =
-		    fgets(ret + azkenera, HELPERS_CONSOLE_BUFFER_SIZE - 1,
+		    fgets(ret + azkenera, HELPERS_CONSOLE_BUFFER_SIZE,
 			  stdin);
 		amaitu_da = strrchr(ret + azkenera, '\n');
 	}
@@ -50,7 +50,7 @@ char *HELPERS_CONSOLE_stringEskatu(char *prompt)
 			ret = tmp;
 			fgets_ondo =
 			    fgets(ret + azkenera,
-				  HELPERS_CONSOLE_BUFFER_SIZE - 1, stdin);
+				  HELPERS_CONSOLE_BUFFER_SIZE, stdin);
 			amaitu_da = strrchr(ret + azkenera, '\n');
 		} else {
 			free(ret);

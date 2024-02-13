@@ -67,6 +67,7 @@ MENU_FUNTZIOA MENU_FUNTZIOAK[MENU_AUKEREN_TAMAINA] = {
 int izenburuzIndexAurkitu(PELIKULA p[], int p_kop, char *izenburua);
 void bistaratu_pelikula_bat(PELIKULA pel);
 void aldatu_pelikula_bat(PELIKULA * peli);
+void pelikula_ezabatu(PELIKULA peli);
 
 int eskatu_estiloa(void);
 void bistaratu_estiloa(int estiloa);
@@ -118,7 +119,7 @@ int izenburuzIndexAurkitu(PELIKULA p[], int p_kop, char *izenburua)
 {
 	int ret = 0;
 	int aurkituta = 0;
-	while (ret < p_kop && aurkituta) {
+	while (ret < p_kop && !aurkituta) {
 		if (!strcmp(izenburua, p[ret].izenburua)) {
 			aurkituta = 1;
 		} else {
@@ -126,6 +127,12 @@ int izenburuzIndexAurkitu(PELIKULA p[], int p_kop, char *izenburua)
 		}
 	}
 	return ret;
+}
+
+void pelikula_ezabatu(PELIKULA peli)
+{
+	free(peli.izenburua);
+	free(peli.zuzendaria);
 }
 
 void aldatu_pelikula_bat(PELIKULA * peli)
@@ -326,9 +333,15 @@ void pelikula_ezabatu_menu(PELIKULA p[], int *p_kop, int p_max)
 
 	char *str = stringEskatu("Emaidazu pelikularen izena: ");
 	int pelikula_idx = izenburuzIndexAurkitu(p, *p_kop, str);
+	free(str);
 
-	memmove(&p[pelikula_idx], &p[pelikula_idx + 1], sizeof(p[pelikula_idx]) * (*p_kop - pelikula_idx - 1));
-	--*p_kop;
+	if (pelikula_idx == *p_kop) {
+		printf("Ez dut pelikula aurkitu.\n");
+	} else {
+		pelikula_ezabatu(p[pelikula_idx]);
+		memmove(&p[pelikula_idx], &p[pelikula_idx + 1], sizeof(p[pelikula_idx]) * (*p_kop - pelikula_idx - 1));
+		--*p_kop;
+	}
 }
 
 void pelikula_guztien_irabaziak_bistaratu(PELIKULA p[], int *p_kop, int p_max)
