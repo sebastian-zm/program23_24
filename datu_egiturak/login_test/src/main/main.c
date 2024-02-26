@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include "login.h"
 #include "params.h"
-#include "console.h"
+#include "console_helper.h"
 
 int main(int argc, char **argv)
 {
@@ -16,7 +16,7 @@ int main(int argc, char **argv)
 
 	fprintf(stdout, "Ongi etorri aplikaziora!\n");
 
-	HELPERS_CONSOLE_return_amaitzeko();
+	CONSOLE_HELPER_itxaron("Sakatu return bukatzeko....");
 
 	return 0;
 }

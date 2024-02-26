@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include "login.h"
-#include "console.h"
+#include "console_helper.h"
 
 #define LOGIN_MAX_USER_LENGTH 63
 #define LOGIN_MAX_PASS_LENGTH 63
@@ -21,10 +21,10 @@ bool LOGIN_main(char *erabiltzaile_path)
 	fprintf(stdout, "Ongi etorri login orrira!\n");
 
 	fprintf(stdout, "Erabiltzailea: ");
-	HELPERS_CONSOLE_eskatu_str(username, sizeof(username));
+	CONSOLE_HELPER_eskatu_str(username, sizeof(username));
 
 	fprintf(stdout, "Pasahitza: ");
-	HELPERS_CONSOLE_eskatu_str(password, sizeof(password));
+	CONSOLE_HELPER_eskatu_str(password, sizeof(password));
 
 	success = LOGIN_find_user(username, password, erabiltzaile_path);
 	return success;
