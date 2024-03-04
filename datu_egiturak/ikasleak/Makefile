@@ -23,7 +23,7 @@ CODE := $(SELF_CODE) $(LIB_HDRS)
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)
 
-CFLAGS := -std=c17 -Wall -Wextra -Werror -pedantic-errors -Og -ggdb3
+CFLAGS := -std=c17 -Wall -Wextra -Werror -Og -ggdb3
 CPPFLAGS := $(INC_FLAGS) -MMD -MP
 LDFLAGS := $(LIB_LDFLAGS)
 
