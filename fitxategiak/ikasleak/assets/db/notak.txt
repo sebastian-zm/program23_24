@@ -1,0 +1,4 @@
+1 Joseba Agirre 2 3 4 5
+2 Irati Gil 7 7 7 7
+3 Jon Iraurgi 6 6 6 6
+4 Iratxe Manterola 4 9 2 10

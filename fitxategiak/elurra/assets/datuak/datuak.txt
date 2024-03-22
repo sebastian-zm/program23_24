@@ -1,0 +1,4 @@
+herria: Arrasate, elurra: 7
+herria: Bergara, elurra: 5.5
+herria: Soraluze, elurra: 3.2
+herria: Eibar, elurra: 1.3

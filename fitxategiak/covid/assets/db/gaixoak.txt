@@ -1,0 +1,10 @@
+1 aaa eee 18 AAA
+2 bbb eee 19 BBB
+3 ccc eee 19 AAA
+4 aaa ddd 18 BBB
+5 aaa lll 19 AAA
+6 bbb ppp 18 BBB
+7 ccc ddd 19 AAA
+8 bbb lll 18 AAA
+9 nnn ddd 19 CCC
+10 nnn eee 18 AAA
