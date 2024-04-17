@@ -1,0 +1,22 @@
+#ifndef PROBINTZIA_H
+#define PROBINTZIA_H
+
+#include <stdio.h>
+#include "alderdi.h"
+#include "array_helper.h"
+
+#define PROBINTZIA_MAX_STR 60
+#define PROBINTZIA_MAX_ALDERDI 5
+#define PROBINTZIA_MAX_PROBINTZIA 5
+
+typedef struct PROBINTZIA_BOTOAK_s {
+	char izena[PROBINTZIA_MAX_STR];
+	ALDERDI_BOTOAK alderdi_botoak[PROBINTZIA_MAX_ALDERDI];
+	int alderdi_kop;
+} PROBINTZIA_BOTOAK;
+
+ARRAY_HELPER_CREATE_ARRAY_HEADER(PROBINTZIAK_BOTOAK, PROBINTZIA_BOTOAK, PROBINTZIA_MAX_PROBINTZIA)
+
+PROBINTZIA_BOTOAK PROBINTZIA_BOTOAK_read(char izena[]);
+
+#endif
