@@ -3,6 +3,7 @@
 
 #include <stddef.h>
 #include <stdlib.h>
+#include "array_funcs_helper.h"
 
 #define ARRAY_HELPER_CREATE_ARRAY_HEADER(prefix, type, size) \
 	typedef struct prefix##_s {\
@@ -62,9 +63,9 @@
 	int prefix##_min(prefix arr, int cmp(type, type)) {\
 		int ret = 0;\
 		for (size_t i = 1; i < arr.length; ++i) {\
-			if (0 < cmp(arr.data[i - 1], arr.data[i])) ret = i;\
+			if (0 < cmp(arr.data[ret], arr.data[i])) ret = i;\
 		}\
-		return ret;\
+		return arr.length ? ret : -1;\
 	}\
 	int prefix##_find(prefix arr, type findme, int eq(type, type)) {\
 		int ret = 0;\

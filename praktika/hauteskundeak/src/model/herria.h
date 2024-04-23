@@ -16,9 +16,7 @@ typedef struct HERRIA_s {
 KP1_HELPER_CREATE_HEADER(
 		HERRIAK,
 		HERRIA,
-		struct HERRIA_s,
-		("NOT IMPLEMENTED %p", &ins),
-		("%d %s %d %d %d %d %d\n", &ins.id, ins.izena, ins.botoak, ins.botoak + 1, ins.botoak + 2, ins.botoak + 3, ins.botoak + 4)
+		struct HERRIA_s
 )
 
 #endif

@@ -17,27 +17,16 @@
  * Type is the struct type to be modified.
  * format_print is the arguments printf would recieve, inside parentheses. Reference the struct with the following variable name: ins
  * format_scan is the arguments scanf would recieve, inside parentheses. Reference the struct with the following variable name: ins
- * Example: KP1_HELPER_CREATE_HEADER(
+ * Example: KP1_HELPER_CREATE(
  *	HERRIALDEAK,
  *	HERRIALDEA,
  *	struct HERRIALDEA_s,
  *	("Herrialdea: %s; ip: %d.%d.%d.%d", ins.izena, ins.ip[0], ins.ip[1], ins.ip[2], ins.ip[3]),
  *	("%s %d.%d.%d.%d", ins.izena, &ins.ip[0], &ins.ip[1], &ins.ip[2], &ins.ip[3])
  * )
- * You put this in a .h file
- * You need to use this alongside KP1_HELPER_CREATE in a .c file
+ * You put this in a .c file
+ * You need to use this alongside KP1_HELPER_CREATE_HEADER in a .h file
  * */
-#define KP1_HELPER_CREATE_HEADER(plural, singular, type, format_print, format_scan) \
-	typedef struct singular##_OK_s {\
-		bool ok;\
-		type data;\
-	} singular##_OK;\
-	ARRAY_HELPER_CREATE_ARRAY_HEADER(plural, type, KP1_HELPER_MAX_ARRAY) \
-	singular##_OK singular##_scan(FILE *KP1_HELPER_FILE_VARIABLE_NAME);\
-	plural plural##_scan(FILE *KP1_HELPER_FILE_VARIABLE_NAME);\
-	void singular##_print(FILE *KP1_HELPER_FILE_VARIABLE_NAME, type ins);\
-	void plural##_print(FILE *KP1_HELPER_FILE_VARIABLE_NAME, plural inss);\
-
 #define KP1_HELPER_CREATE(plural, singular, type, format_print, format_scan) \
 	ARRAY_HELPER_CREATE_ARRAY(plural, type, KP1_HELPER_MAX_ARRAY)\
 	singular##_OK singular##_scan(FILE *KP1_HELPER_FILE_VARIABLE_NAME) {\
@@ -66,5 +55,16 @@
 			singular##_print(KP1_HELPER_FILE_VARIABLE_NAME, inss.data[idx]);\
 		}\
 	}\
+
+#define KP1_HELPER_CREATE_HEADER(plural, singular, type) \
+	typedef struct singular##_OK_s {\
+		bool ok;\
+		type data;\
+	} singular##_OK;\
+	ARRAY_HELPER_CREATE_ARRAY_HEADER(plural, type, KP1_HELPER_MAX_ARRAY) \
+	singular##_OK singular##_scan(FILE *KP1_HELPER_FILE_VARIABLE_NAME);\
+	plural plural##_scan(FILE *KP1_HELPER_FILE_VARIABLE_NAME);\
+	void singular##_print(FILE *KP1_HELPER_FILE_VARIABLE_NAME, type ins);\
+	void plural##_print(FILE *KP1_HELPER_FILE_VARIABLE_NAME, plural inss);\
 
 #endif
