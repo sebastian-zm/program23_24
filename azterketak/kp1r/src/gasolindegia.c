@@ -61,8 +61,8 @@ double GASOLINDEGIAK_batazbeste_gasoila(GASOLINDEGIAK gasolindegiak)
 
 void GASOLINDEGIAK_VIEW_batazbeste_saldu(FILE* fp, GASOLINDEGIAK gasolindegiak)
 {
-	double gasoila_prezioa = GASOLINDEGIAK_batazbeste_gasolina(gasolindegiak);
-	double gasolina_prezioa = GASOLINDEGIAK_batazbeste_gasoila(gasolindegiak);
+	double gasolina_prezioa = GASOLINDEGIAK_batazbeste_gasolina(gasolindegiak);
+	double gasoila_prezioa = GASOLINDEGIAK_batazbeste_gasoila(gasolindegiak);
 
 	fprintf(fp, "gasolinaren batazbestekoa %f\n", gasolina_prezioa);
 	fprintf(fp, "gasoilaren batazbestekoa %f\n", gasoila_prezioa);

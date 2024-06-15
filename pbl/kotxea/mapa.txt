@@ -1,0 +1,21 @@
+0 SanAndres 100 100 
+1 Musakola 400 100
+2 Biteri 400 250
+3 Erguin 250 400
+4 Garibai 100 400
+
+ SanAndres 100 Musakola
+ Musakola 100 SanAndres
+ SanAndres 80 Musakola
+ Musakola 80 SanAndres
+ Musakola 120 Garibai
+ Garibai 120 Musakola
+ Musakola 210 Biteri
+ Biteri 210 Musakola
+ Biteri 220 Erguin
+ Erguin 220 Biteri
+ Garibai 150 SanAndres
+ SanAndres 150 Garibai
+ Erguin	50 Garibai
+ Garibai 50 Erguin
+ 

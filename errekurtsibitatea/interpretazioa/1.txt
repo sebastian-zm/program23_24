@@ -1,0 +1,3 @@
+zenb zenbakiak x ala txikiagoak eta 1 baino handiagoak diren zatitzaileak dituen itzultzen du.
+
+x = zenb / 2 bada, zenb zenbaki lehena den itzultzen du.

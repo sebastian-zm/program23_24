@@ -1,0 +1,20 @@
+0 santander 100 100 
+1 bilbo 300 100
+2 zar 400 400
+3 madrid 200 500
+4 burgos 100 300
+
+santander 100 bilbo
+bilbo 100 santander
+santander 80 burgos
+burgos 80 santander
+bilbo 120 burgos
+burgos 120 bilbo
+bilbo 210 zar
+zar 210 bilbo
+zar 220 madrid
+madrid 220 zar
+zar 190 burgos
+burgos 190 zar
+madrid 1800 burgos
+burgos 1800 madrid

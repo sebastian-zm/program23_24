@@ -55,6 +55,7 @@ void ARRAY_FUNCS_HELPER_keep_if(void *arr, size_t *len, size_t size, int keep(vo
 		} else {
 			diff += size;
 			--*len;
+			--i;
 		}
 		arr_c += size;
 	}
